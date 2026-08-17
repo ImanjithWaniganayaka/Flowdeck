@@ -5,6 +5,9 @@ import { z } from "zod";
 import { createLovableAiGatewayProvider } from "@/lib/ai-gateway.server";
 import { getRequestUser } from "@/lib/supabase-request.server";
 import { COLUMN_KEYS, CATEGORIES } from "@/lib/board";
+import type { Database } from "@/integrations/supabase/types";
+
+type CardUpdate = Database["public"]["Tables"]["cards"]["Update"];
 
 const cardFields =
   "id,title,description,column_key,position,due_date,time_estimate,category,created_at,updated_at";
@@ -163,7 +166,7 @@ export const Route = createFileRoute("/api/chat")({
               category: z.enum(CATEGORIES as unknown as [string, ...string[]]).nullable(),
             }),
             execute: async (input) => {
-              const patch: Record<string, string> = {};
+              const patch: CardUpdate = {};
               if (input.title !== null) patch["title"] = input.title;
               if (input.description !== null) patch["description"] = input.description;
               if (input.due_date !== null) patch["due_date"] = input.due_date;
@@ -207,7 +210,7 @@ export const Route = createFileRoute("/api/chat")({
             "When the user asks to add, move, update or remove work, use the tools instead of only describing what to do.",
             "Be concise and practical. Use short markdown with bullet lists when summarising. Mention overdue tasks first when relevant.",
           ].join("\n"),
-          messages: convertToModelMessages(uiMessages),
+          messages: await convertToModelMessages(uiMessages),
         });
 
         return result.toUIMessageStreamResponse({
