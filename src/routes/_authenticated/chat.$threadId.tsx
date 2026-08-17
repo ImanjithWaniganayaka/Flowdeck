@@ -170,8 +170,7 @@ function ChatWindow({
 
   const busy = status === "submitted" || status === "streaming";
 
-  const submit = (event: React.FormEvent) => {
-    event.preventDefault();
+  const submit = () => {
     const text = input.trim();
     if (!text || busy) return;
     setInput("");
