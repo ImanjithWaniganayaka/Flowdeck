@@ -40,7 +40,7 @@ export const Route = createFileRoute("/_authenticated/board")({
       },
     ],
   }),
-  component: BoardPage;
+  component: BoardPage,
 });
 
 function BoardPage() {
