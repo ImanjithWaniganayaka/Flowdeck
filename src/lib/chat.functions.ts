@@ -58,7 +58,7 @@ export const getThread = createServerFn({ method: "POST" })
       messages: (rows ?? []).map((row) => ({
         id: row.id,
         role: row.role as "user" | "assistant" | "system",
-        parts: (Array.isArray(row.parts) ? row.parts : []) as unknown[],
+        parts: JSON.stringify(Array.isArray(row.parts) ? row.parts : []),
       })),
     };
   });
