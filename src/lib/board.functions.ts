@@ -1,6 +1,9 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { z } from "zod";
+import type { Database } from "@/integrations/supabase/types";
+
+type CardUpdate = Database["public"]["Tables"]["cards"]["Update"];
 
 const cardFields = "id,title,description,column_key,position,due_date,time_estimate,category,created_at,updated_at";
 
@@ -70,9 +73,9 @@ export const updateCard = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => UpdateCardInput.parse(input))
   .handler(async ({ data, context }) => {
     const { id, ...rest } = data;
-    const patch: Record<string, string | number | null> = {};
+    const patch: CardUpdate = {};
     for (const [key, value] of Object.entries(rest)) {
-      if (value !== undefined) patch[key] = value;
+      if (value !== undefined) (patch as Record<string, unknown>)[key] = value;
     }
     const { data: row, error } = await context.supabase
       .from("cards")
