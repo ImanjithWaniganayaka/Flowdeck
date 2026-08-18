@@ -2,6 +2,14 @@
 
 A drag-and-drop Kanban board with a built-in AI copilot. Plan your work across **To Do → In Progress → Review → Done**, and just tell the AI what to add, move, or update instead of clicking through forms.
 
+## Screenshots
+
+**Landing page**
+![Flowza landing page](docs/screenshot-landing.png)
+
+**Board**
+![Flowza board view](docs/screenshot-board.png)
+
 ## Features
 
 - **Drag-and-drop board** — four columns (To Do, In Progress, Review, Done) built with `@dnd-kit`, with smooth reordering and column-to-column moves.
